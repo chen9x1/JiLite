@@ -1,0 +1,93 @@
+/* Top-level box job */
+insert_job: box_level_top   job_type: BOX
+description: "This is the top-level box job that encapsulates all other jobs and sub-boxes."
+owner: user@linux.host.net
+machine: linux.host.net
+permission: 
+date_conditions: 1
+days_of_week: all
+start_times: "00:00"
+alarm_if_fail: 0
+alarm_if_terminated: 0
+
+/* File Watcher job in top box */
+insert_job: watch_input_file   job_type: FW
+description: "File watcher job to monitor input file arrival"
+owner: user@linux.host.net
+permission: 
+box_name: box_level_top
+watch_file: "/data/input/incoming.txt"
+watch_interval: 60
+alarm_if_fail: 1
+alarm_if_terminated: 1
+
+/* Second-level box job */
+insert_job: box_level_1   job_type: BOX
+description: "This is a 1-level box job nested inside the 0-level box."
+owner: user@linux.host.net
+machine: linux.host.net
+permission: 
+date_conditions: 0
+box_name: box_level_0
+alarm_if_fail: 0
+alarm_if_terminated: 0
+
+/* 1-level job 1 */
+insert_job: job_level_1_1   job_type: CMD
+description: "This is the first job at the 1 level, nested inside the 0-level box."
+owner: user@linux.host.net
+permission: 
+date_conditions: 0
+box_name: box_level_0
+command: /path/to/second_level_command_1.sh
+machine: linux.host.net
+std_out_file: "${OUTPUT}"
+std_err_file: "${OUTERR}"
+profile: "${app_home}/profile.sh"
+alarm_if_fail: 1
+alarm_if_terminated: 1
+
+/* 1-level job 2 */
+insert_job: job_level_1_2   job_type: CMD
+description: "This is the second job at the 1 level, nested inside the 0-level box."
+owner: user@linux.host.net
+permission: 
+date_conditions: 0
+box_name: box_level_0
+command: /path/to/second_level_command_2.sh
+machine: linux.host.net
+std_out_file: "${OUTPUT}"
+std_err_file: "${OUTERR}"
+profile: "${app_home}/profile.sh"
+alarm_if_fail: 1
+alarm_if_terminated: 1
+
+/* 2-level job 1 inside the 1-level box */
+insert_job: job_level_2_1   job_type: CMD
+description: "This is the first job at the 2 level, nested inside the 1-level box."
+owner: user@linux.host.net
+permission: 
+date_conditions: 0
+box_name: box_level_1
+command: /path/to/third_level_command_1.sh
+machine: linux.host.net
+std_out_file: "${OUTPUT}"
+std_err_file: "${OUTERR}"
+profile: "${app_home}/profile.sh"
+alarm_if_fail: 1
+alarm_if_terminated: 1
+
+/* 2-level job 2 inside the 1-level box */
+insert_job: job_level_2_2   job_type: CMD
+description: "This is the second job at the 2 level, nested inside the 1-level box."
+owner: user@linux.host.net
+permission: 
+date_conditions: 0
+box_name: box_level_1
+command: /path/to/third_level_command_2.sh
+machine: linux.host.net
+std_out_file: "${OUTPUT}"
+std_err_file: "${OUTERR}"
+profile: "${app_home}/profile.sh" 
+alarm_if_fail: 1
+alarm_if_terminated: 1   
